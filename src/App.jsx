@@ -2,6 +2,10 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Experience from "./components/Experience";
+import Web3 from "./components/Web3";
+import Contact from "./components/Contact";
 
 function App() {
   return (
@@ -10,15 +14,11 @@ function App() {
       <Hero />
       <About />
       <Skills />
+      <Projects />
+      <Experience />
+      <Web3 />
+      <Contact />
       
-
-      {/* Temporary sections */}
-     
-      <section id="skills" className="min-h-screen bg-[#020617]" />
-      <section id="projects" className="min-h-screen bg-[#020617]" />
-      <section id="experience" className="min-h-screen bg-[#020617]" />
-      <section id="web3" className="min-h-screen bg-[#020617]" />
-      <section id="contact" className="min-h-screen bg-[#020617]" />
     </main>
   );
 }
