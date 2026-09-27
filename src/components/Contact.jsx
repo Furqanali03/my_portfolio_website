@@ -6,6 +6,8 @@ import {
   FiSend,
   FiArrowUpRight,
 } from "react-icons/fi";
+import logo from "../assets/logo.png";
+
 
 function Contact() {
   return (
@@ -191,12 +193,120 @@ function Contact() {
         </motion.div>
 
         {/* Footer */}
-        <div className="mt-24 border-t border-white/10 pt-8 text-center">
-          <p className="text-sm text-slate-600">
-            © {new Date().getFullYear()} Furqan Ali. Built with React,
-            JavaScript & lots of ☕.
-          </p>
+       <footer className="relative mt-24 overflow-hidden border-t border-white/10 bg-[#020617]">
+
+  {/* Glow */}
+  <div className="absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-blue-600/10 blur-3xl" />
+
+  <div className="relative mx-auto max-w-7xl px-6 py-16 lg:px-8">
+
+    {/* Main Footer */}
+    <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+
+      {/* Brand */}
+      <div className="lg:col-span-2">
+        <div className="mb-5 flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-blue-500/30 bg-blue-500/10">
+             <a href="#home" className="flex items-center gap-3">
+                      <img
+                        src={logo}
+                        alt="FA Logo"
+                        className="h-10 w-10 object-contain"
+                      />
+                    </a>  
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-white">
+              Furqan Ali
+            </h3>
+            <p className="text-sm text-slate-500">
+              Full-Stack & Web3 Developer
+            </p>
+          </div>
         </div>
+
+        <p className="max-w-md leading-7 text-slate-400">
+          I build modern web applications and blockchain solutions
+          with a focus on clean UI, scalable architecture and great
+          user experiences.
+        </p>
+
+        {/* Socials */}
+        <div className="mt-6 flex gap-3">
+          <a
+            href="#"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-blue-500/40 hover:text-blue-400"
+          >
+            <FiGithub />
+          </a>
+
+          <a
+            href="#"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-blue-500/40 hover:text-blue-400"
+          >
+            <FiLinkedin />
+          </a>
+
+          <a
+            href="#"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-blue-500/40 hover:text-blue-400"
+          >
+            <FiMail />
+          </a>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div>
+        <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-white">
+          Navigation
+        </h4>
+
+        <ul className="space-y-3">
+          {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
+            <li key={item}>
+              <a
+                href={`#${item.toLowerCase()}`}
+                className="text-sm text-slate-400 transition hover:text-blue-400"
+              >
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Expertise */}
+      <div>
+        <h4 className="mb-5 text-sm font-semibold uppercase tracking-wider text-white">
+          Expertise
+        </h4>
+
+        <ul className="space-y-3 text-sm text-slate-400">
+          <li>React / Next.js</li>
+          <li>JavaScript / TypeScript</li>
+          <li>Solidity / Smart Contracts</li>
+          <li>Web3 Development</li>
+          <li>Node.js</li>
+        </ul>
+      </div>
+    </div>
+
+    {/* Bottom */}
+    <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+
+      <p className="text-sm text-slate-500">
+        © {new Date().getFullYear()} Furqan Ali. All rights reserved.
+      </p>
+
+      <p className="text-sm text-slate-600">
+        Built with React, JavaScript & lots of ☕
+      </p>
+
+    </div>
+  </div>
+</footer>
       </div>
     </section>
   );

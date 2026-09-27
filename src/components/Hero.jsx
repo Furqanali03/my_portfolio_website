@@ -1,4 +1,11 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+
 import {
   FiArrowRight,
   FiGithub,
@@ -9,6 +16,91 @@ import {
 import heroImage from "../assets/hero.png";
 
 function Hero() {
+  // =========================
+  // Typing Animation
+  // =========================
+  const roles = [
+    "Frontend Developer",
+    "Web3 Enthusiast",
+  ];
+
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentRole = roles[roleIndex];
+
+    const typingSpeed = isDeleting ? 60 : 100;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        // Typing
+        setDisplayText(currentRole.substring(0, displayText.length + 1));
+
+        // Finished typing
+        if (displayText === currentRole) {
+          setTimeout(() => setIsDeleting(true), 1200);
+        }
+      } else {
+        // Deleting
+        setDisplayText(currentRole.substring(0, displayText.length - 1));
+
+        // Finished deleting
+        if (displayText === "") {
+          setIsDeleting(false);
+          setRoleIndex((prev) => (prev + 1) % roles.length);
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, roleIndex]);
+
+  // =========================
+  // Interactive 3D Tilt
+  // =========================
+  const contentRef = useRef(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const smoothX = useSpring(mouseX, {
+    stiffness: 150,
+    damping: 20,
+  });
+
+  const smoothY = useSpring(mouseY, {
+    stiffness: 150,
+    damping: 20,
+  });
+
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-5, 5]);
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [5, -5]);
+
+  const moveX = useTransform(smoothX, [-0.5, 0.5], [-8, 8]);
+  const moveY = useTransform(smoothY, [-0.5, 0.5], [-6, 6]);
+
+  const handlePointerMove = (event) => {
+    if (!contentRef.current) return;
+
+    const rect = contentRef.current.getBoundingClientRect();
+
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const normalizedX = x / rect.width - 0.5;
+    const normalizedY = y / rect.height - 0.5;
+
+    mouseX.set(normalizedX);
+    mouseY.set(normalizedY);
+  };
+
+  const handlePointerLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   return (
     <section
       id="home"
@@ -26,12 +118,24 @@ function Hero() {
       {/* Blue Glow */}
       <div className="absolute -left-40 top-1/3 h-96 w-96 rounded-full bg-blue-600/20 blur-[140px]" />
 
+      {/* Purple Glow */}
       <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-purple-600/10 blur-[150px]" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pt-24 md:px-10">
-        <div className="max-w-2xl">
-
+        <motion.div
+          ref={contentRef}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+          style={{
+            rotateX,
+            rotateY,
+            x: moveX,
+            y: moveY,
+            transformPerspective: 1000,
+          }}
+          className="max-w-2xl will-change-transform"
+        >
           {/* Small Intro */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -55,16 +159,19 @@ function Hero() {
             </span>
           </motion.h1>
 
-          {/* Role */}
+          {/* Animated Role */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-5 text-2xl font-semibold text-slate-200 sm:text-3xl"
+            className="mt-5 min-h-[40px] text-2xl font-semibold text-slate-200 sm:text-3xl"
           >
-            Frontend Developer{" "}
-            <span className="text-blue-500">&</span>{" "}
-            <span className="text-blue-400">Web3 Enthusiast</span>
+            <span className="bg-gradient-to-r from-slate-200 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              {displayText}
+            </span>
+
+            {/* Typing Cursor */}
+            <span className="ml-1 inline-block h-7 w-[2px] translate-y-1 animate-pulse bg-blue-400 sm:h-8" />
           </motion.h2>
 
           {/* Description */}
@@ -114,7 +221,7 @@ function Hero() {
             className="mt-9 flex items-center gap-3"
           >
             <a
-              href="#"
+              href="https://github.com/Furqanali03"
               className="rounded-full border border-white/10 bg-white/5 p-3 text-slate-300 transition hover:-translate-y-1 hover:border-blue-400/40 hover:text-blue-400"
             >
               <FiGithub size={19} />
@@ -134,7 +241,7 @@ function Hero() {
               <FiMail size={19} />
             </a>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom Fade */}
